@@ -1,0 +1,21 @@
+# Ignore dbt's generated directories and packages
+adventureworks/dbt_packages/
+adventureworks/logs/
+adventureworks/target/
+adventureworks/seeds/
+
+# Ignore Python's generated files and directories
+__pycache__/
+*.pyc
+venv/
+
+# Ignore sensitive files and IDE-specific configurations
+.env
+.DS_Store
+.git/
+.gitignore
+.vscode/
+
+# Ignore large or temporary files
+*.csv
+*.zip
