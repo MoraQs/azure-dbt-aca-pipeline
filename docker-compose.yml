@@ -5,7 +5,7 @@ services:
       - ./dbt_project:/usr/app/dbt_project
     # Load variables from the .env file
     env_file:
-      - ./.env
+      - ./.env  
     # Explicitly list the environment variables to be passed to the container
     environment:
       - DATABRICKS_HOST=${DATABRICKS_HOST}

@@ -1,0 +1,12 @@
+[
+  { "domain": "sales", "table": "salesorderdetail" },
+  { "domain": "sales", "table": "salesorderheader" },
+  { "domain": "products", "table": "product" },
+  { "domain": "products", "table": "productcategory" },
+  { "domain": "products", "table": "productdescription" },
+  { "domain": "products", "table": "productmodel" },
+  { "domain": "products", "table": "productmodelproductdescription" },
+  { "domain": "customers", "table": "customer" },
+  { "domain": "customers", "table": "customeraddress" },
+  { "domain": "customers", "table": "address" }
+]
