@@ -1,45 +1,42 @@
-import os
 import json
+from pathlib import Path
 
-BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-MODELS_DIR = os.path.join(BASE_DIR, "models", "staging")
-SOURCE_MANIFEST = os.path.join(BASE_DIR, "sources_manifest.json")
+BASE_DIR = Path(__file__).resolve().parent.parent
+PROJECT_DIR = BASE_DIR / "adventureworks"
+MODELS_DIR = PROJECT_DIR / "models" / "staging"
+SOURCE_MANIFEST = BASE_DIR / "sources_manifest.json"
 
-with open(SOURCE_MANIFEST, "r") as f:
-    entries = json.load(f)
+with SOURCE_MANIFEST.open("r") as f:
+    entries = sorted(json.load(f), key=lambda x: (x["domain"], x["table"]))
 
 sources_by_domain = {}
 
 for entry in entries:
     domain = entry["domain"]
     table = entry["table"]
-    domain_path = os.path.join(MODELS_DIR, domain)
-    os.makedirs(domain_path, exist_ok=True)
+    domain_path = MODELS_DIR / domain
+    domain_path.mkdir(parents=True, exist_ok=True)
 
-    # Generate stg_<table>.sql
-    sql_path = os.path.join(domain_path, f"stg_{table}.sql")
-    with open(sql_path, "w") as f:
-        f.write(f"""{{{{ config(materialized='view') }}}}
+    sql_file = domain_path / f"stg_{table}.sql"
+    sql_file.write_text(f"""{{{{ config(materialized='view') }}}}
 
 -- staging model for {table}
 select *
 from {{{{ source('bronze', '{table}') }}}}
 """)
 
-    # Prepare for sources.yml
-    if domain not in sources_by_domain:
-        sources_by_domain[domain] = []
-    sources_by_domain[domain].append(table)
+    sources_by_domain.setdefault(domain, []).append(table)
 
-# Generate sources.yml per domain
 for domain, tables in sources_by_domain.items():
-    sources_yml_path = os.path.join(MODELS_DIR, domain, "sources.yml")
-    with open(sources_yml_path, "w") as f:
-        f.write("version: 2\n\n")
-        f.write("sources:\n")
-        f.write("  - name: raw\n")
-        f.write("    tables:\n")
-        for table in tables:
-            f.write(f"      - name: {table}\n")
+    yml_path = MODELS_DIR / domain / "sources.yml"
+    lines = [
+        "version: 2\n",
+        "sources:\n",
+        "  - name: bronze\n",
+        "    tables:\n"
+    ]
+    for table in tables:
+        lines.append(f"      - name: {table}\n")
+    yml_path.write_text("".join(lines))
 
-print(f"✅ Generated staging models and sources.yml for {len(entries)} tables.")
+print(f"✅ Generated {len(entries)} staging models and sources.yml files inside adventureworks/models/staging/")

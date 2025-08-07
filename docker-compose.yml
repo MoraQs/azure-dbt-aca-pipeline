@@ -2,7 +2,7 @@ services:
   dbt:
     build: .
     volumes:
-      - ./dbt_project:/usr/app/dbt_project
+      - .:/usr/app
     # Load variables from the .env file
     env_file:
       - ./.env  
@@ -11,4 +11,5 @@ services:
       - DATABRICKS_HOST=${DATABRICKS_HOST}
       - DATABRICKS_HTTP_PATH=${DATABRICKS_HTTP_PATH}
       - DATABRICKS_TOKEN=${DATABRICKS_TOKEN}
+    working_dir: /usr/app/adventureworks
     command: ["/bin/bash"]

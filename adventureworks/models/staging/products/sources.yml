@@ -1,0 +1,9 @@
+version: 2
+sources:
+  - name: bronze
+    tables:
+      - name: product
+      - name: productcategory
+      - name: productdescription
+      - name: productmodel
+      - name: productmodelproductdescription

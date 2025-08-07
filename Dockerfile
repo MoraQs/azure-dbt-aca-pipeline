@@ -9,7 +9,7 @@ RUN apt-get update && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY ./adventureworks /usr/app/adventureworks
-COPY ./scripts/generate_staging_models.py /usr/app/generate_staging_models.py
+COPY ./scripts/generate_staging_models.py /usr/app/scripts/generate_staging_models.py
 COPY ./sources_manifest.json /usr/app/sources_manifest.json
 
-ENTRYPOINT ["/bin/bash"]
+CMD [ "bash" ]
