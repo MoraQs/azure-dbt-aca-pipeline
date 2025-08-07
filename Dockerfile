@@ -6,6 +6,7 @@ WORKDIR /usr/app
 RUN apt-get update && \
     apt-get install -y bash && \
     pip install dbt-core dbt-databricks && \
+    apt-get install -y git && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY ./adventureworks /usr/app/adventureworks

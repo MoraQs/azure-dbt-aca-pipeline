@@ -7,4 +7,4 @@ adventureworks:
       http_path: "{{ env_var('DATABRICKS_HTTP_PATH') }}"
       token: "{{ env_var('DATABRICKS_TOKEN') }}"
       catalog: adventureworks
-      schema: curated
+      schema: bronze
