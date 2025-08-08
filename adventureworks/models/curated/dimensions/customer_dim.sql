@@ -6,6 +6,7 @@ address_cte as (
   
 		c.CustomerID,
 		c.AddressType,
+		row_number() over(partition by c.CustomerID order by c.ModifiedDate desc) as scd_update,
 		a.AddressLine1 as Address,
 		a.City,
 		a.CountryRegion as Country,
@@ -57,6 +58,8 @@ join_cte as (
 		customer_cte as cus
 	left join 
 		address_cte as adr on cus.CustomerID = adr.CustomerID
+	where
+		adr.scd_update = 1
 
 )
 
