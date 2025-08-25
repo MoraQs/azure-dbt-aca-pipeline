@@ -5,8 +5,7 @@ on:
     branches: [ "main", "feature/*" ]
     
   workflow_dispatch:
-    - feature/*
-    
+
 env:
   IMAGE_NAME: dbt-transform
 
