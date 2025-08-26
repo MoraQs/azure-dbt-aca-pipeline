@@ -1,5 +1,5 @@
 services:
-  dbt:
+  dbt-runner:
     build: .
     volumes:
       - .:/usr/app
@@ -8,6 +8,7 @@ services:
       - ./.env  
     # Explicitly list the environment variables to be passed to the container
     environment:
+      - DBT_PROFILES_DIR=/usr/app/adventureworks
       - DATABRICKS_HOST=${DATABRICKS_HOST}
       - DATABRICKS_HTTP_PATH=${DATABRICKS_HTTP_PATH}
       - DATABRICKS_TOKEN=${DATABRICKS_TOKEN}
